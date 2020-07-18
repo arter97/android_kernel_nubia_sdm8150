@@ -175,18 +175,23 @@ int i2c_himax_read(struct i2c_client *client, uint8_t command, uint8_t * data,
 		   uint8_t length, uint8_t toRetry)
 {
 	int retry;
+	uint8_t *buf =
+	    kzalloc((length + 4) * sizeof(uint8_t), GFP_KERNEL | GFP_DMA);
+
+	buf[0] = command;
+
 	struct i2c_msg msg[] = {
 		{
 		 .addr = client->addr,
 		 .flags = 0,
 		 .len = 1,
-		 .buf = &command,
+		 .buf = buf,
 		 },
 		{
 		 .addr = client->addr,
 		 .flags = I2C_M_RD,
 		 .len = length,
-		 .buf = data,
+		 .buf = buf + 1,
 		 }
 	};
 
@@ -196,6 +201,10 @@ int i2c_himax_read(struct i2c_client *client, uint8_t command, uint8_t * data,
 			break;
 		msleep(20);
 	}
+
+	memcpy(data, buf + 1, length);
+	kfree(buf);
+
 	if (retry == toRetry) {
 		E("%s: i2c_read_block retry over %d\n", __func__, toRetry);
 		i2c_error_count = toRetry;
@@ -211,7 +220,8 @@ int i2c_himax_write(struct i2c_client *client, uint8_t command, uint8_t * data,
 		    uint8_t length, uint8_t toRetry)
 {
 	int retry /*, loop_i */ ;
-	uint8_t buf[length + 1];
+	uint8_t *buf =
+	    kzalloc((length + 1) * sizeof(uint8_t), GFP_KERNEL | GFP_DMA);
 
 	struct i2c_msg msg[] = {
 		{
@@ -231,6 +241,8 @@ int i2c_himax_write(struct i2c_client *client, uint8_t command, uint8_t * data,
 			break;
 		msleep(20);
 	}
+
+	kfree(buf);
 
 	if (retry == toRetry) {
 		E("%s: i2c_write_block retry over %d\n", __func__, toRetry);
