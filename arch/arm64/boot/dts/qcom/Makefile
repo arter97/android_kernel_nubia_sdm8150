@@ -204,6 +204,7 @@ always          += sa8155p-v2.dtb \
 	sm8150.dtb \
 	sa8155-v2.dtb \
 	sa8155p.dtb
+endif
 always          += $(dtbo-y)
 subdir-y	:= $(dts-dirs)
 else
