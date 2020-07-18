@@ -18,12 +18,11 @@
 #include "himax_platform.h"
 #include "himax_common.h"
 
-
 #ifdef HX_ESD_RECOVERY
 extern u8 HX_ESD_RESET_ACTIVATE;
-extern 	int hx_EB_event_flag;
-extern 	int hx_EC_event_flag;
-extern 	int hx_ED_event_flag;
+extern int hx_EB_event_flag;
+extern int hx_EC_event_flag;
+extern int hx_ED_event_flag;
 #endif
 
 #if defined(CONFIG_TOUCHSCREEN_HIMAX_DEBUG)
@@ -35,13 +34,13 @@ extern 	int hx_ED_event_flag;
 #define HIMAX_PROC_LAYOUT_FILE		"layout"
 #define HIMAX_PROC_CRC_TEST_FILE		"CRC_test"
 
-static struct proc_dir_entry *himax_touch_proc_dir 			= NULL;
-static struct proc_dir_entry *himax_proc_debug_level_file 	= NULL;
-static struct proc_dir_entry *himax_proc_vendor_file 		= NULL;
-static struct proc_dir_entry *himax_proc_attn_file 			= NULL;
-static struct proc_dir_entry *himax_proc_int_en_file 		= NULL;
-static struct proc_dir_entry *himax_proc_layout_file 		= NULL;
-static struct proc_dir_entry *himax_proc_CRC_test_file 		= NULL;
+static struct proc_dir_entry *himax_touch_proc_dir = NULL;
+static struct proc_dir_entry *himax_proc_debug_level_file = NULL;
+static struct proc_dir_entry *himax_proc_vendor_file = NULL;
+static struct proc_dir_entry *himax_proc_attn_file = NULL;
+static struct proc_dir_entry *himax_proc_int_en_file = NULL;
+static struct proc_dir_entry *himax_proc_layout_file = NULL;
+static struct proc_dir_entry *himax_proc_CRC_test_file = NULL;
 
 uint8_t HX_PROC_SEND_FLAG;
 
@@ -53,12 +52,12 @@ extern int himax_int_en_set(struct i2c_client *client);
 
 #ifdef HX_TP_PROC_GUEST_INFO
 #define HIMAX_PROC_GUEST_INFO_FILE		"guest_info"
-static struct proc_dir_entry *himax_proc_guest_info_file 	= NULL;
+static struct proc_dir_entry *himax_proc_guest_info_file = NULL;
 #endif
 
 #if defined(CONFIG_TOUCHSCREEN_HIMAX_ITO_TEST)
 #define HIMAX_PROC_ITO_TEST_FILE		"ITO_test"
-//static struct proc_dir_entry *himax_proc_ito_test_file 		= NULL;
+//static struct proc_dir_entry *himax_proc_ito_test_file                = NULL;
 
 extern void ito_set_step_status(uint8_t status);
 extern uint8_t ito_get_step_status(void);
@@ -93,38 +92,38 @@ static uint8_t y_channel_2 = 0;
 static uint32_t *diag_mutual_2 = NULL;
 
 int32_t *getMutualBuffer_2(void);
-uint8_t 	getXChannel_2(void);
-uint8_t 	getYChannel_2(void);
+uint8_t getXChannel_2(void);
+uint8_t getYChannel_2(void);
 
-void 	setMutualBuffer_2(void);
-void 	setXChannel_2(uint8_t x);
-void 	setYChannel_2(uint8_t y);
+void setMutualBuffer_2(void);
+void setXChannel_2(uint8_t x);
+void setYChannel_2(uint8_t y);
 #endif
-uint8_t x_channel 		= 0;
-uint8_t y_channel 		= 0;
-	int32_t *diag_mutual = NULL;
-	int32_t *diag_mutual_new = NULL;
-	int32_t *diag_mutual_old = NULL;
+uint8_t x_channel = 0;
+uint8_t y_channel = 0;
+int32_t *diag_mutual = NULL;
+int32_t *diag_mutual_new = NULL;
+int32_t *diag_mutual_old = NULL;
 uint8_t diag_max_cnt = 0;
-uint8_t hx_state_info[2] = {0};
+uint8_t hx_state_info[2] = { 0 };
 
 int g_diag_command = 0;
-uint8_t diag_coor[128];// = {0xFF};
-	int32_t diag_self[100] = {0};
+uint8_t diag_coor[128];		// = {0xFF};
+int32_t diag_self[100] = { 0 };
 
-	int32_t *getMutualBuffer(void);
-	int32_t *getMutualNewBuffer(void);
-	int32_t *getMutualOldBuffer(void);
-	int32_t *getSelfBuffer(void);
-uint8_t 	getDiagCommand(void);
-uint8_t 	getXChannel(void);
-uint8_t 	getYChannel(void);
+int32_t *getMutualBuffer(void);
+int32_t *getMutualNewBuffer(void);
+int32_t *getMutualOldBuffer(void);
+int32_t *getSelfBuffer(void);
+uint8_t getDiagCommand(void);
+uint8_t getXChannel(void);
+uint8_t getYChannel(void);
 
-void 	setMutualBuffer(void);
-void 	setMutualNewBuffer(void);
-void 	setMutualOldBuffer(void);
-void 	setXChannel(uint8_t x);
-void 	setYChannel(uint8_t y);
+void setMutualBuffer(void);
+void setMutualNewBuffer(void);
+void setMutualOldBuffer(void);
+void setXChannel(uint8_t x);
+void setYChannel(uint8_t y);
 #endif
 
 #ifdef HX_TP_PROC_DEBUG
@@ -135,10 +134,10 @@ struct proc_dir_entry *himax_proc_fw_debug_file = NULL;
 #define HIMAX_PROC_DD_DEBUG_FILE	"DD_debug"
 struct proc_dir_entry *himax_proc_dd_debug_file = NULL;
 
-bool	fw_update_complete = false;
+bool fw_update_complete = false;
 int handshaking_result = 0;
 unsigned char debug_level_cmd = 0;
-unsigned char upgrade_fw[128*1024];
+unsigned char upgrade_fw[128 * 1024];
 uint8_t cmd_set[8];
 uint8_t mutual_set_flag = 0;
 #endif
@@ -148,14 +147,14 @@ uint8_t mutual_set_flag = 0;
 struct proc_dir_entry *himax_proc_flash_dump_file = NULL;
 
 static int Flash_Size = 131072;
-static uint8_t *flash_buffer 				= NULL;
-static uint8_t flash_command 				= 0;
-static uint8_t flash_read_step 			= 0;
-static uint8_t flash_progress 			= 0;
-static uint8_t flash_dump_complete	= 0;
-static uint8_t flash_dump_fail 			= 0;
-static uint8_t sys_operation				= 0;
-static bool    flash_dump_going			= false;
+static uint8_t *flash_buffer = NULL;
+static uint8_t flash_command = 0;
+static uint8_t flash_read_step = 0;
+static uint8_t flash_progress = 0;
+static uint8_t flash_dump_complete = 0;
+static uint8_t flash_dump_fail = 0;
+static uint8_t sys_operation = 0;
+static bool flash_dump_going = false;
 
 static uint8_t getFlashDumpComplete(void);
 static uint8_t getFlashDumpFail(void);
@@ -224,10 +223,9 @@ struct proc_dir_entry *nubia_BASEDC_data_file = NULL;
 struct proc_dir_entry *nubia_user_update_file = NULL;
 #endif
 
-
 #ifdef HX_TP_PROC_RESET
 #define HIMAX_PROC_RESET_FILE		"reset"
-struct proc_dir_entry *himax_proc_reset_file 		= NULL;
+struct proc_dir_entry *himax_proc_reset_file = NULL;
 #endif
 
 #ifdef HX_HIGH_SENSE

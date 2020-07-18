@@ -64,10 +64,10 @@
  * Applications.
  */
 struct TEEC_UUID {
-    uint32_t timeLow;
-    uint16_t timeMid;
-    uint16_t timeHiAndVersion;
-    uint8_t clockSeqAndNode[8];
+	uint32_t timeLow;
+	uint16_t timeMid;
+	uint16_t timeHiAndVersion;
+	uint8_t clockSeqAndNode[8];
 };
 
 extern struct TEEC_UUID uuid_fp;
@@ -87,7 +87,7 @@ extern struct TEEC_UUID uuid_fp;
 #if (!REE_MTK_ANDROID_L && defined(CONFIG_MTK_SPI))
 #include "mt_spi.h"
 #include "mt_spi_hal.h"
-#endif // end of #if (!REE_MTK_ANDROID_L && defined(CONFIG_MTK_SPI))
+#endif				// end of #if (!REE_MTK_ANDROID_L && defined(CONFIG_MTK_SPI))
 typedef struct spi_device sf_device_t;
 typedef struct spi_driver sf_driver_t;
 #define SW_BUS_NAME "spi bus"
@@ -96,39 +96,39 @@ typedef struct spi_driver sf_driver_t;
 typedef struct platform_device sf_device_t;
 typedef struct platform_driver sf_driver_t;
 #define SW_BUS_NAME "platform bus"
-#endif // end of #if SF_SPI_RW_EN
+#endif				// end of #if SF_SPI_RW_EN
 
 struct sf_ctl_device {
-    struct miscdevice miscdev;
-    int rst_num;
-    int irq_pin;
-    int irq_num;
-    int pwr_num;
-    struct work_struct work_queue;
-    struct input_dev *input;
-    struct regulator *vdd_reg;
-    int  (*gpio_init) (struct sf_ctl_device *ctl_dev);
-    int  (*free_gpio) (struct sf_ctl_device *ctl_dev);
-    int  (*power_on)  (bool on);
-    int  (*spi_clk_on)(bool on);
-    int  (*reset)     (void);
+	struct miscdevice miscdev;
+	int rst_num;
+	int irq_pin;
+	int irq_num;
+	int pwr_num;
+	struct work_struct work_queue;
+	struct input_dev *input;
+	struct regulator *vdd_reg;
+	int (*gpio_init) (struct sf_ctl_device * ctl_dev);
+	int (*free_gpio) (struct sf_ctl_device * ctl_dev);
+	int (*power_on) (bool on);
+	int (*spi_clk_on) (bool on);
+	int (*reset) (void);
 #ifdef CONFIG_PM_WAKELOCKS
-    struct wakeup_source wakelock;
+	struct wakeup_source wakelock;
 #else
-    struct wake_lock wakelock;
+	struct wake_lock wakelock;
 #endif
 #ifdef CONFIG_HAS_EARLYSUSPEND
-    struct early_suspend early_suspend;
+	struct early_suspend early_suspend;
 #elif defined(CONFIG_ADF_SPRD)
-    struct notifier_block adf_event_block;
+	struct notifier_block adf_event_block;
 #else
-    struct notifier_block notifier;
+	struct notifier_block notifier;
 #endif
-    char *spi_buffer;
-    int attribute;
-    sf_device_t *pdev;
+	char *spi_buffer;
+	int attribute;
+	sf_device_t *pdev;
 #if (defined(CONFIG_MTK_SPI) || SF_TRUSTKERNEL_COMPAT_SPI_MT65XX)
-    struct mt_chip_conf mt_conf;
+	struct mt_chip_conf mt_conf;
 #endif
 };
 
@@ -142,37 +142,37 @@ struct sf_ctl_device {
 #define SF_DRV_VERSION_LEN 32
 
 typedef enum {
-    SF_KEY_NONE = 0,
-    SF_KEY_HOME,
-    SF_KEY_MENU,
-    SF_KEY_BACK,
-    SF_KEY_F11,
-    SF_KEY_ENTER,
-    SF_KEY_UP,
-    SF_KEY_LEFT,
-    SF_KEY_RIGHT,
-    SF_KEY_DOWN,
-    SF_KEY_WAKEUP,
+	SF_KEY_NONE = 0,
+	SF_KEY_HOME,
+	SF_KEY_MENU,
+	SF_KEY_BACK,
+	SF_KEY_F11,
+	SF_KEY_ENTER,
+	SF_KEY_UP,
+	SF_KEY_LEFT,
+	SF_KEY_RIGHT,
+	SF_KEY_DOWN,
+	SF_KEY_WAKEUP,
 } sf_key_type_t;
 
 typedef struct {
-    sf_key_type_t key;
-    int value; /* for key type, 0 means up, 1 means down. */
+	sf_key_type_t key;
+	int value;		/* for key type, 0 means up, 1 means down. */
 } sf_key_event_t;
 
 #define SF_MAX_VER_INFO_LEN 32
 
 typedef struct {
-    char tee_solution[SF_MAX_VER_INFO_LEN];
-    char ca_version  [SF_MAX_VER_INFO_LEN * 2];
-    char ta_version  [SF_MAX_VER_INFO_LEN * 2];
-    char algorithm   [SF_MAX_VER_INFO_LEN];
-    char algo_nav    [SF_MAX_VER_INFO_LEN];
-    char driver      [SF_MAX_VER_INFO_LEN];
-    char firmware    [SF_MAX_VER_INFO_LEN];
-    char sunwave_id  [SF_MAX_VER_INFO_LEN];
-    char vendor_id   [SF_MAX_VER_INFO_LEN];
-} __attribute__((__packed__)) sf_version_info_t;
+	char tee_solution[SF_MAX_VER_INFO_LEN];
+	char ca_version[SF_MAX_VER_INFO_LEN * 2];
+	char ta_version[SF_MAX_VER_INFO_LEN * 2];
+	char algorithm[SF_MAX_VER_INFO_LEN];
+	char algo_nav[SF_MAX_VER_INFO_LEN];
+	char driver[SF_MAX_VER_INFO_LEN];
+	char firmware[SF_MAX_VER_INFO_LEN];
+	char sunwave_id[SF_MAX_VER_INFO_LEN];
+	char vendor_id[SF_MAX_VER_INFO_LEN];
+} __attribute__ ((__packed__)) sf_version_info_t;
 
 /* Magic code for IOCTL-subsystem, 's'(0x73) means 'Sunwave'. */
 #define SF_IOC_MAGIC 's'
@@ -223,4 +223,4 @@ typedef struct {
 #define SPI_IOC_WR_MAX_SPEED_HZ     _IOW(SPI_IOC_MAGIC, 4, __u32)
 #define SPI_IOC_RST                 _IO(SPI_IOC_MAGIC, 5)
 #define SUNWAVE_IOC_ATTRIBUTE       _IOW(SPI_IOC_MAGIC, 17, __u32)
-#endif /* __SF_CTRL_API_H__ */
+#endif				/* __SF_CTRL_API_H__ */

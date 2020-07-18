@@ -121,4 +121,4 @@
 #define SF_TRUSTKERNEL_COMPAT_SPI_MT65XX         0
 #endif
 
-#endif //__SF_AUTO_H__
+#endif				//__SF_AUTO_H__
